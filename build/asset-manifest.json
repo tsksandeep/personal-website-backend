@@ -1,16 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.db78c7db.chunk.css",
-    "main.js": "/static/js/main.0034b6db.chunk.js",
-    "main.js.map": "/static/js/main.0034b6db.chunk.js.map",
+    "main.css": "/static/css/main.3a8b5251.chunk.css",
+    "main.js": "/static/js/main.2293d5e5.chunk.js",
+    "main.js.map": "/static/js/main.2293d5e5.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.fa961822.js",
     "runtime-main.js.map": "/static/js/runtime-main.fa961822.js.map",
     "static/js/2.be8cc2d3.chunk.js": "/static/js/2.be8cc2d3.chunk.js",
     "static/js/2.be8cc2d3.chunk.js.map": "/static/js/2.be8cc2d3.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.db78c7db.chunk.css.map": "/static/css/main.db78c7db.chunk.css.map",
+    "static/css/main.3a8b5251.chunk.css.map": "/static/css/main.3a8b5251.chunk.css.map",
     "static/js/2.be8cc2d3.chunk.js.LICENSE.txt": "/static/js/2.be8cc2d3.chunk.js.LICENSE.txt",
     "static/media/App.css": "/static/media/Roboto-Regular.03523cf5.ttf",
+    "static/media/ajith.92f962cc.jpeg": "/static/media/ajith.92f962cc.jpeg",
     "static/media/avatar.9421416d.jpg": "/static/media/avatar.9421416d.jpg",
     "static/media/ionicons.min.css": "/static/media/ionicons.b45d332f.svg",
     "static/media/sandeep.e4ca494f.jpeg": "/static/media/sandeep.e4ca494f.jpeg",
@@ -21,7 +22,7 @@
   "entrypoints": [
     "static/js/runtime-main.fa961822.js",
     "static/js/2.be8cc2d3.chunk.js",
-    "static/css/main.db78c7db.chunk.css",
-    "static/js/main.0034b6db.chunk.js"
+    "static/css/main.3a8b5251.chunk.css",
+    "static/js/main.2293d5e5.chunk.js"
   ]
 }
