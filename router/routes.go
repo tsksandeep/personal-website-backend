@@ -10,7 +10,7 @@ import (
 
 	"github.com/website/handlers/contact"
 	"github.com/website/handlers/download"
-	"github.com/website/handlers/user"
+	recaptcha "github.com/website/handlers/reCaptcha"
 )
 
 const (
@@ -75,28 +75,26 @@ func NewRouter() *Router {
 func (router *Router) AddRoutes() {
 	contactHandler := contact.New()
 	downloadHanlder := download.New()
-	userHandler := user.New()
+	reCaptchaHandler := recaptcha.New()
 
 	router.Group(func(r chi.Router) {
 		//routes to contact handler
 		r.Post(apiVersion1+"/contact", contactHandler.PostContact)
 
-		//routes to user handler
-		r.Post(apiVersion1+"/user-details", userHandler.PostUserDetails)
-
 		//routes to download handler
 		r.Get(apiVersion1+"/download/resume", downloadHanlder.GetResume)
+
+		//routes to reCaptcha handler
+		r.Get(apiVersion1+"/recaptcha", reCaptchaHandler.GetToken)
 
 		// paths that don't exist in the API server
 		r.HandleFunc("/api/*", func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(404)
 			w.Write([]byte("Resource not available"))
-			return
 		})
 
 		r.HandleFunc("/googlefb60a2c818affcda.html", func(w http.ResponseWriter, r *http.Request) {
 			http.ServeFile(w, r, "static/googlefb60a2c818affcda.html")
-			return
 		})
 	})
 	// set up static file serving

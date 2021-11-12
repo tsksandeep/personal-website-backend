@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/website/router"
@@ -19,7 +18,7 @@ func main() {
 
 	apiRouter := router.NewRouter()
 	apiRouter.AddRoutes()
-	port := ":" + os.Getenv("PORT")
+	port := ":8080"
 	server := http.Server{
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 5 * time.Minute,

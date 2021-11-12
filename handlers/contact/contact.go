@@ -41,6 +41,4 @@ func (ch *contactHandler) PostContact(w http.ResponseWriter, r *http.Request) {
 		log.Error(err)
 		handlers.WriteHandlerError(err, http.StatusInternalServerError, httputils.UnexpectedError, w, r)
 	}
-
-	return
 }
