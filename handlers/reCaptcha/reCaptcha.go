@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"os/exec"
+	"strings"
 
 	"github.com/website/handlers"
 	"github.com/website/httputils"
@@ -24,15 +25,16 @@ func (rh *reCaptchaHandler) GetToken(w http.ResponseWriter, r *http.Request) {
 	var stdOut bytes.Buffer
 	var stdErr bytes.Buffer
 
-	clientApi := r.URL.Query().Get("client_api")
+	url := r.URL.Query().Get("url")
+	clientKey := r.URL.Query().Get("client_key")
 	action := r.URL.Query().Get("action")
 
-	if clientApi == "" || action == "" {
+	if url == "" || clientKey == "" || action == "" {
 		handlers.WriteHandlerError(errors.New("no query parameters"), http.StatusBadRequest, httputils.BadRequest, w, r)
 		return
 	}
 
-	cmd := exec.Command("python3.6", "/app/reCaptcha/app.py", clientApi, action)
+	cmd := exec.Command("python3.6", "/app/reCaptcha/app.py", url, clientKey, action)
 	cmd.Stdout = &stdOut
 	cmd.Stderr = &stdErr
 
@@ -43,7 +45,7 @@ func (rh *reCaptchaHandler) GetToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = httputils.WriteJson(200, ReCaptchaResponse{Token: stdOut.String()}, w)
+	err = httputils.WriteJson(200, ReCaptchaResponse{Token: strings.TrimSuffix(stdOut.String(), "\n")}, w)
 	if err != nil {
 		log.Error(err)
 		handlers.WriteHandlerError(err, http.StatusInternalServerError, httputils.UnexpectedError, w, r)
