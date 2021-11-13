@@ -14,6 +14,10 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+var (
+	ERROR_RENDERING_RECAPTCHA = "page did not render recaptcha properly"
+)
+
 type reCaptchaHandler struct{}
 
 // New creates a new instance of Contact Handler
@@ -45,9 +49,16 @@ func (rh *reCaptchaHandler) GetToken(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = httputils.WriteJson(200, ReCaptchaResponse{Token: strings.TrimSuffix(stdOut.String(), "\n")}, w)
-	if err != nil {
-		log.Error(err)
-		handlers.WriteHandlerError(err, http.StatusInternalServerError, httputils.UnexpectedError, w, r)
+	output := strings.TrimSuffix(stdOut.String(), "\n")
+	switch output {
+	case ERROR_RENDERING_RECAPTCHA:
+		log.Error(ERROR_RENDERING_RECAPTCHA)
+		handlers.WriteHandlerError(errors.New(ERROR_RENDERING_RECAPTCHA), http.StatusBadRequest, httputils.BadRequest, w, r)
+	default:
+		err = httputils.WriteJson(200, ReCaptchaResponse{Token: output}, w)
+		if err != nil {
+			log.Error(err)
+			handlers.WriteHandlerError(errors.New("unable to get token"), http.StatusInternalServerError, httputils.UnexpectedError, w, r)
+		}
 	}
 }

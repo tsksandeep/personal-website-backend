@@ -49,22 +49,16 @@ func GetAbbreAuthToken(r *http.Request) string {
 }
 
 func WriteHandlerError(handlerErr *HandlerError, r *http.Request, w http.ResponseWriter) {
-	requestID := ""
-	if id, ok := r.Context().Value(ContextRequestIDKey).(string); ok {
-		requestID = id
-	}
 	httpError := &HttpError{
-		Status:    handlerErr.HttpStatusCode,
-		RequestID: requestID,
-		Errors:    handlerErr.SubErrors,
-		Code:      httpStatusCodes[handlerErr.HttpStatusCode],
+		Status: handlerErr.HttpStatusCode,
+		Errors: handlerErr.SubErrors,
+		Code:   httpStatusCodes[handlerErr.HttpStatusCode],
 	}
 
 	logFields := map[string]interface{}{
 		"error":      handlerErr,
 		"requestURI": r.RequestURI,
 		"method":     r.Method,
-		"requestId":  requestID,
 		"authToken":  GetAbbreAuthToken(r),
 	}
 	log.WithFields(logFields).Error("request failed")
@@ -104,6 +98,6 @@ func WriteJson(status int, response interface{}, w http.ResponseWriter) error {
 	if response == nil {
 		return nil
 	}
-	
+
 	return json.NewEncoder(w).Encode(response)
 }

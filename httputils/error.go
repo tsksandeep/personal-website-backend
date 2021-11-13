@@ -137,6 +137,5 @@ func NewForbiddenError(message string) *HandlerError {
 type HttpError struct {
 	Status    int         `json:"httpStatus"`
 	Code      string      `json:"httpCode"`
-	RequestID string      `json:"requestId"`
 	Errors    []*SubError `json:"errors"`
 }
