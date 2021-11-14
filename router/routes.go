@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	apiVersion1 = "/api/v1"
+	apiVersion1 = "/v1"
 )
 
 //Router is the wrapper for go chi
@@ -56,7 +56,7 @@ func (router *Router) AddRoutes() {
 		r.Post(apiVersion1+"/anytocsv", anyToCsvHandler.PostCsv)
 
 		// paths that don't exist in the API server
-		r.HandleFunc("/api/*", func(w http.ResponseWriter, r *http.Request) {
+		r.HandleFunc("/*", func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(404)
 			w.Write([]byte("Resource not available"))
 		})
