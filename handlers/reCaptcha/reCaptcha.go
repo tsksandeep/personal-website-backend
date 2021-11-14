@@ -2,14 +2,12 @@ package recaptcha
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"net/http"
 	"os/exec"
 	"strings"
 
 	"github.com/website/handlers"
-	"github.com/website/httputils"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -34,18 +32,18 @@ func (rh *reCaptchaHandler) GetToken(w http.ResponseWriter, r *http.Request) {
 	action := r.URL.Query().Get("action")
 
 	if url == "" || clientKey == "" || action == "" {
-		handlers.WriteHandlerError(errors.New("no query parameters"), http.StatusBadRequest, httputils.BadRequest, w, r)
+		handlers.WriteHandlerError("no query parameters", http.StatusBadRequest, w)
 		return
 	}
 
-	cmd := exec.Command("python3.6", "/app/reCaptcha/app.py", url, clientKey, action)
+	cmd := exec.Command("python3.6", "/app/applications/reCaptcha/app.py", url, clientKey, action)
 	cmd.Stdout = &stdOut
 	cmd.Stderr = &stdErr
 
 	err := cmd.Run()
 	if err != nil {
 		log.Error(fmt.Sprint(err) + ": " + stdErr.String())
-		handlers.WriteHandlerError(errors.New("unable to get token"), http.StatusInternalServerError, httputils.UnexpectedError, w, r)
+		handlers.WriteHandlerError("unable to get token", http.StatusInternalServerError, w)
 		return
 	}
 
@@ -53,12 +51,12 @@ func (rh *reCaptchaHandler) GetToken(w http.ResponseWriter, r *http.Request) {
 	switch output {
 	case ERROR_RENDERING_RECAPTCHA:
 		log.Error(ERROR_RENDERING_RECAPTCHA)
-		handlers.WriteHandlerError(errors.New(ERROR_RENDERING_RECAPTCHA), http.StatusBadRequest, httputils.BadRequest, w, r)
+		handlers.WriteHandlerError(ERROR_RENDERING_RECAPTCHA, http.StatusBadRequest, w)
 	default:
-		err = httputils.WriteJson(200, ReCaptchaResponse{Token: output}, w)
+		err = handlers.WriteHandlerResp(ReCaptchaResponse{Token: output}, 200, w)
 		if err != nil {
 			log.Error(err)
-			handlers.WriteHandlerError(errors.New("unable to get token"), http.StatusInternalServerError, httputils.UnexpectedError, w, r)
+			handlers.WriteHandlerError("unable to get token", http.StatusInternalServerError, w)
 		}
 	}
 }

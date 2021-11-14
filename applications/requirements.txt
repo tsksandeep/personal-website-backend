@@ -1,0 +1,7 @@
+selenium
+pandas
+openpyxl
+tabula-py
+table_ocr
+pytesseract
+xlrd==1.2.0

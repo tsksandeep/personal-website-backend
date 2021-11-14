@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/cors"
 	log "github.com/sirupsen/logrus"
 
+	anytocsv "github.com/website/handlers/anyToCsv"
 	"github.com/website/handlers/contact"
 	"github.com/website/handlers/download"
 	recaptcha "github.com/website/handlers/reCaptcha"
@@ -76,6 +77,7 @@ func (router *Router) AddRoutes() {
 	contactHandler := contact.New()
 	downloadHanlder := download.New()
 	reCaptchaHandler := recaptcha.New()
+	anyToCsvHandler := anytocsv.New()
 
 	router.Group(func(r chi.Router) {
 		//routes to contact handler
@@ -86,6 +88,9 @@ func (router *Router) AddRoutes() {
 
 		//routes to reCaptcha handler
 		r.Get(apiVersion1+"/recaptcha", reCaptchaHandler.GetToken)
+
+		//routes to anyToCsv handler
+		r.Post(apiVersion1+"/anytocsv", anyToCsvHandler.PostCsv)
 
 		// paths that don't exist in the API server
 		r.HandleFunc("/api/*", func(w http.ResponseWriter, r *http.Request) {
@@ -99,7 +104,7 @@ func (router *Router) AddRoutes() {
 	})
 	// set up static file serving
 	fs := http.FileServer(FileSystem{
-		fs: http.Dir("build"),
+		fs: http.Dir("public"),
 	})
 	router.Handle("/*", fs)
 }

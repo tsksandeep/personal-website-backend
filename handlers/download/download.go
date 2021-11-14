@@ -5,7 +5,6 @@ import (
 	"path/filepath"
 
 	"github.com/website/handlers"
-	"github.com/website/httputils"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -18,14 +17,14 @@ func New() handlers.DownloadHandler {
 }
 
 func (ch *downloadHanlder) GetResume(w http.ResponseWriter, r *http.Request) {
-
 	absPath, err := filepath.Abs("./static/sandeep_resume.pdf")
 	if err != nil {
 		log.Error("error resolving relative path for sandeep resume")
-		handlers.WriteHandlerError(err, http.StatusInternalServerError, httputils.UnexpectedError, w, r)
+		handlers.WriteHandlerError("internal server error", http.StatusInternalServerError, w)
 		return
 	}
 
+	w.WriteHeader(200)
 	w.Header().Set("Content-Disposition", "attachment; filename="+filepath.Base(absPath))
 	w.Header().Set("Content-Type", "application/octet-stream")
 	http.ServeFile(w, r, absPath)

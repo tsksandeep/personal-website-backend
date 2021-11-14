@@ -2,12 +2,10 @@ package contact
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 
 	"github.com/website/email"
 	"github.com/website/handlers"
-	"github.com/website/httputils"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -25,20 +23,20 @@ func (ch *contactHandler) PostContact(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&contactInfo)
 	if err != nil {
 		log.Error(err)
-		handlers.WriteHandlerError(errors.New("no body parameter"), http.StatusBadRequest, httputils.BadRequest, w, r)
+		handlers.WriteHandlerError("no body parameter", http.StatusBadRequest, w)
 		return
 	}
 
 	err = email.SendEmail(&contactInfo)
 	if err != nil {
 		log.Error(err)
-		handlers.WriteHandlerError(errors.New("email could not be sent"), http.StatusInternalServerError, httputils.UnexpectedError, w, r)
+		handlers.WriteHandlerError("email could not be sent", http.StatusInternalServerError, w)
 		return
 	}
 
-	err = httputils.WriteJson(200, nil, w)
+	err = handlers.WriteHandlerResp(nil, http.StatusOK, w)
 	if err != nil {
 		log.Error(err)
-		handlers.WriteHandlerError(err, http.StatusInternalServerError, httputils.UnexpectedError, w, r)
+		handlers.WriteHandlerError("internal server error", http.StatusInternalServerError, w)
 	}
 }
