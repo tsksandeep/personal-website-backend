@@ -2,11 +2,9 @@ package router
 
 import (
 	"net/http"
-	"os"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
-	log "github.com/sirupsen/logrus"
 
 	anytocsv "github.com/website/handlers/anyToCsv"
 	"github.com/website/handlers/contact"
@@ -17,41 +15,6 @@ import (
 const (
 	apiVersion1 = "/api/v1"
 )
-
-// FileSystem is a custom file system handler to handle requests to React routes
-type FileSystem struct {
-	fs http.FileSystem
-}
-
-// Open opens file
-func (fs FileSystem) Open(path string) (http.File, error) {
-	index := "/index.html"
-
-	f, err := fs.fs.Open(path)
-	if os.IsNotExist(err) {
-		if f, err = fs.fs.Open(index); err != nil {
-			log.Error(err)
-			return nil, err
-		}
-	} else if err != nil {
-		log.Error(err)
-		return nil, err
-	}
-
-	s, err := f.Stat()
-	if err != nil {
-		log.Error(err)
-		return nil, err
-	}
-	if s.IsDir() {
-		if _, err = fs.fs.Open(index); err != nil {
-			log.Error(err)
-			return nil, err
-		}
-	}
-
-	return f, nil
-}
 
 //Router is the wrapper for go chi
 type Router struct {
@@ -102,9 +65,4 @@ func (router *Router) AddRoutes() {
 			http.ServeFile(w, r, "static/googlefb60a2c818affcda.html")
 		})
 	})
-	// set up static file serving
-	fs := http.FileServer(FileSystem{
-		fs: http.Dir("public"),
-	})
-	router.Handle("/*", fs)
 }
