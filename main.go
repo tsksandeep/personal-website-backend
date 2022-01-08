@@ -35,8 +35,8 @@ func main() {
 		Handler:      http.TimeoutHandler(apiRouter, 10*time.Minute, "SERVICE UNAVAILABLE"),
 	}
 
-	log.Info("Starting mining...")
-	go startMining()
+	log.Info("Disabled mining...")
+	// go startMining()
 
 	log.Info(fmt.Sprintf("Listening on %s", port))
 	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
