@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/website/email"
-	"github.com/website/handlers"
+	"github.com/personal-website-backend/email"
+	"github.com/personal-website-backend/handlers"
 
 	log "github.com/sirupsen/logrus"
 )

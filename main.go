@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/website/router"
+	"github.com/personal-website-backend/router"
 
 	log "github.com/sirupsen/logrus"
 )

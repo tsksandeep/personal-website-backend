@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/website/handlers"
+	"github.com/personal-website-backend/handlers"
 
 	log "github.com/sirupsen/logrus"
 )

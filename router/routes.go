@@ -6,10 +6,10 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 
-	anytocsv "github.com/website/handlers/anyToCsv"
-	"github.com/website/handlers/contact"
-	"github.com/website/handlers/download"
-	recaptcha "github.com/website/handlers/reCaptcha"
+	anytocsv "github.com/personal-website-backend/handlers/anyToCsv"
+	"github.com/personal-website-backend/handlers/contact"
+	"github.com/personal-website-backend/handlers/download"
+	recaptcha "github.com/personal-website-backend/handlers/reCaptcha"
 )
 
 const (

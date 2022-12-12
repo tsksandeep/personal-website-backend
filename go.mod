@@ -1,4 +1,4 @@
-module github.com/website
+module github.com/personal-website-backend
 
 // +heroku goVersion go1.15
 go 1.15

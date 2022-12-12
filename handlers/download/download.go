@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/website/handlers"
+	"github.com/personal-website-backend/handlers"
 
 	log "github.com/sirupsen/logrus"
 )
